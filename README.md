@@ -1,7 +1,7 @@
 # 🏦 BCA (Bank Central Asia) API's Go Library
 
 [![Library Status](https://img.shields.io/badge/status-unofficial-yellow.svg)]()
-[![Go Report Card](https://goreportcard.com/badge/github.com/ianeinser/go-bca)](https://goreportcard.com/report/github.com/ianeinser/go-bca)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ianeinser/bca-api-go)](https://goreportcard.com/report/github.com/ianeinser/bca-api-go)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
 [![Build Status](https://travis-ci.org/ianeinser/go-bca.svg?branch=master)](https://travis-ci.org/ianeinser/go-bca)
 
