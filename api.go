@@ -10,19 +10,24 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"net/url"
 	"os"
 	"strings"
 	"time"
+	"unicode"
+
+	"github.com/juju/errors"
 )
 
-//Client is an interface for making call to BCA API
-type Client interface {
-	Call(method, path string, body io.Reader, v interface{}) error
+//API is an interface for making call to BCA API
+type API interface {
+	//Call(method, path string, body io.Reader, v interface{}) error
+	Call(method, path string, body []byte, v interface{}) error
 	CallRaw(method, path string, headers http.Header, body io.Reader, v interface{}) error
 }
 
-//ClientImplementation represents config that used for HTTP client needs
-type ClientImplementation struct {
+//APIImplementation represents config that used for HTTP client needs
+type APIImplementation struct {
 	APIKey     string
 	APISecret  string
 	OriginHost string
@@ -32,9 +37,9 @@ type ClientImplementation struct {
 	Logger     *log.Logger
 }
 
-//NewClient is used to initialize new ClientImplementation
-func NewClient(cfg Config) ClientImplementation {
-	return ClientImplementation{
+//NewAPI is used to initialize new APIImplementation
+func NewAPI(cfg Config) APIImplementation {
+	return APIImplementation{
 		APIKey:     cfg.APIKey,
 		APISecret:  cfg.APISecret,
 		URL:        cfg.URL,
@@ -50,7 +55,9 @@ func NewClient(cfg Config) ClientImplementation {
 }
 
 //Call is the implementation for invoking BCA API with its authentication
-func (c *ClientImplementation) Call(method, path, accessToken string, body io.Reader, v interface{}) error {
+//func (c *APIImplementation) Call(method, path, accessToken string, body io.Reader, v interface{}) error {
+func (c *APIImplementation) Call(method, path, accessToken string, additionalHeader map[string]string, body []byte, v interface{}) error {
+
 	headers := http.Header{}
 	headers.Add("Authorization", "Bearer "+accessToken)
 	headers.Add("Origin", c.OriginHost)
@@ -59,16 +66,24 @@ func (c *ClientImplementation) Call(method, path, accessToken string, body io.Re
 	timestamp := time.Now().Format("2006-01-02T15:04:05.999Z07:00")
 	headers.Add("X-BCA-Timestamp", timestamp)
 
-	buf := new(bytes.Buffer)
-	buf.ReadFrom(body)
-	signature := generateSignature(c.APISecret, method, path, accessToken, buf.String(), timestamp)
+	//buf := new(bytes.Buffer)
+	//buf.ReadFrom(body)
+	//signature := generateSignature(c.APISecret, method, path, accessToken, buf.String(), timestamp)
+	signature := generateSignature(c.APISecret, method, path, accessToken, string(body), timestamp)
 	headers.Add("X-BCA-Signature", signature)
 
-	return c.CallRaw(method, path, "application/json", headers, body, v)
+	// Add additional headers as by FundTransferDomestic
+	for key, val := range additionalHeader {
+		headers.Add(key, val)
+	}
+
+	//return c.CallRaw(method, path, "application/json", headers, body, v)
+	return c.CallRaw(method, path, "application/json", headers, bytes.NewBuffer(body), v)
+
 }
 
 //CallRaw is the implementation for invoking API without any wrapper
-func (c *ClientImplementation) CallRaw(method, path, contentType string, headers http.Header, body io.Reader, v interface{}) error {
+func (c *APIImplementation) CallRaw(method, path, contentType string, headers http.Header, body io.Reader, v interface{}) error {
 	req, err := c.NewRequest(method, path, contentType, headers, body)
 
 	if err != nil {
@@ -79,7 +94,7 @@ func (c *ClientImplementation) CallRaw(method, path, contentType string, headers
 }
 
 //NewRequest is used to create new HTTP request of BCA API
-func (c *ClientImplementation) NewRequest(method, path, contentType string, headers http.Header, body io.Reader) (*http.Request, error) {
+func (c *APIImplementation) NewRequest(method, path, contentType string, headers http.Header, body io.Reader) (*http.Request, error) {
 	if !strings.HasPrefix(path, "/") {
 		path = "/" + path
 	}
@@ -108,7 +123,7 @@ func (c *ClientImplementation) NewRequest(method, path, contentType string, head
 }
 
 //Do is used by Call to execute BCA HTTP request and parse the response
-func (c *ClientImplementation) Do(req *http.Request, v interface{}) error {
+func (c *APIImplementation) Do(req *http.Request, v interface{}) error {
 	logLevel := c.LogLevel
 	logger := c.Logger
 
@@ -159,12 +174,53 @@ func (c *ClientImplementation) Do(req *http.Request, v interface{}) error {
 	return nil
 }
 
+func canonicalize(str string) string {
+	var b strings.Builder
+	b.Grow(len(str))
+	for _, ch := range str {
+		if !unicode.IsSpace(ch) {
+			b.WriteRune(ch)
+		}
+	}
+	return b.String()
+}
+
+func sortQueryParam(urlStr string) (string, error) {
+	u, err := url.Parse(urlStr)
+	if err != nil {
+		return "", errors.Trace(err)
+	}
+
+	u.RawQuery = u.Query().Encode()
+	return u.String(), nil
+}
+
 func generateSignature(apiSecret, method, path, accessToken, requestBody, timestamp string) string {
+	canonicalReqBody := canonicalize(requestBody)
 	h := sha256.New()
-	h.Write([]byte(requestBody))
-	strToSign := method + ":" + path + ":" + accessToken + ":" + hex.EncodeToString(h.Sum(nil)) + ":" + timestamp
+	//h.Write([]byte(requestBody))
+	if _, err := h.Write([]byte(canonicalReqBody)); err != nil {
+		//return "", "", errors.Trace(err)
+		panic(err)
+	}
+	sortedURL, err := sortQueryParam(path)
+	if err != nil {
+		//return "", "", errors.Trace(err)
+		panic(err)
+	}
+	//strToSign := method + ":" + path + ":" + accessToken + ":" + hex.EncodeToString(h.Sum(nil)) + ":" + timestamp
+
+	strToSign := method + ":" +
+		sortedURL + ":" +
+		accessToken + ":" +
+		strings.ToLower(hex.EncodeToString(h.Sum(nil))) + ":" +
+		timestamp
 
 	mac := hmac.New(sha256.New, []byte(apiSecret))
-	mac.Write([]byte(strToSign))
+	//mac.Write([]byte(strToSign))
+	if _, err = mac.Write([]byte(strToSign)); err != nil {
+		//return "", strToSign, errors.Trace(err)
+		panic(err)
+	}
 	return hex.EncodeToString(mac.Sum(nil))
 }

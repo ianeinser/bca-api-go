@@ -9,5 +9,17 @@ type Config struct {
 	URL          string
 	CorporateID  string
 	OriginHost   string
-	LogLevel     int
+
+	ChannelID    string
+	CredentialID string
+	CompanyCode  string
+
+	FIReCorporateID string
+	AccessCode      string
+	BranchCode      string
+	UserID          string
+	LocalID         string
+
+	LogLevel int
+	LogPath  string
 }

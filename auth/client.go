@@ -7,12 +7,12 @@ import (
 	"net/url"
 	"strings"
 
-	bca "github.com/haritsfahreza/go-bca"
+	bca "github.com/ianeinser/go-bca"
 )
 
 //Client is used to invoke BCA OAuth 2.0 API
 type Client struct {
-	Client       bca.ClientImplementation
+	Client       bca.APIImplementation
 	ClientID     string
 	ClientSecret string
 }
@@ -20,7 +20,7 @@ type Client struct {
 //NewClient is used to initialize new auth.Client
 func NewClient(config bca.Config) Client {
 	return Client{
-		Client:       bca.NewClient(config),
+		Client:       bca.NewAPI(config),
 		ClientID:     config.ClientID,
 		ClientSecret: config.ClientSecret,
 	}

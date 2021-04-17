@@ -1,9 +1,9 @@
 # 🏦 BCA (Bank Central Asia) API's Go Library
 
 [![Library Status](https://img.shields.io/badge/status-unofficial-yellow.svg)]()
-[![Go Report Card](https://goreportcard.com/badge/github.com/haritsfahreza/go-bca)](https://goreportcard.com/report/github.com/haritsfahreza/go-bca)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ianeinser/go-bca)](https://goreportcard.com/report/github.com/ianeinser/go-bca)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/haritsfahreza/go-bca.svg?branch=master)](https://travis-ci.org/haritsfahreza/go-bca)
+[![Build Status](https://travis-ci.org/ianeinser/go-bca.svg?branch=master)](https://travis-ci.org/ianeinser/go-bca)
 
 Go(lang) library to speed up your BCA (Bank Central Asia) API integration process. See this [official documentation of BCA API](https://developer.bca.co.id/documentation/)
 
@@ -12,8 +12,8 @@ Go(lang) library to speed up your BCA (Bank Central Asia) API integration proces
 import (
 	"context"
 
-	"github.com/haritsfahreza/go-bca"
-	"github.com/haritsfahreza/go-bca/business"
+	"github.com/ianeinser/go-bca"
+	"github.com/ianeinser/go-bca/business"
 )
 
 func main() {
