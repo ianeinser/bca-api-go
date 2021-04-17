@@ -24,7 +24,7 @@ func NewClient(config bca.Config) Client {
 
 //VAInquiryStatusPayment is used to see the list of payment status that are owned by the customers. The data will be automatically queried between D-day (hari H) until D-2 day (H-2 / the day before yesterday), with maximum records returned are 10 rows
 func (c *Client) VAInquiryStatusPayment(ctx context.Context, ptr_vaInquiryStatusPaymentRequest *bca.VAInquiryStatusPaymentRequest) (*bca.VAInquiryStatusPaymentResponse, error) {
-	var ptr_vaInquiryStatusPaymentResponse *bca.VAInquiryStatusPaymentResponse
+	var vaInquiryStatusPaymentResponse bca.VAInquiryStatusPaymentResponse
 	path := "/va/payments"
 
 	v := url.Values{}
@@ -41,9 +41,9 @@ func (c *Client) VAInquiryStatusPayment(ctx context.Context, ptr_vaInquiryStatus
 
 	path += "?" + v.Encode()
 
-	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, ptr_vaInquiryStatusPaymentResponse); err != nil {
-		return ptr_vaInquiryStatusPaymentResponse, err
+	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, &vaInquiryStatusPaymentResponse); err != nil {
+		return &vaInquiryStatusPaymentResponse, err
 	}
-	return ptr_vaInquiryStatusPaymentResponse, nil
+	return &vaInquiryStatusPaymentResponse, nil
 
 }

@@ -36,10 +36,10 @@ func (c *Client) GetToken(ctx context.Context) (*bca.AuthToken, error) {
 	data := url.Values{}
 	data.Add("grant_type", "client_credentials")
 
-	var ptr_authToken *bca.AuthToken
+	var authToken bca.AuthToken
 	if err := c.Client.CallRaw("POST", path, "application/x-www-form-urlencoded",
-		header, strings.NewReader(data.Encode()), ptr_authToken); err != nil {
-		return ptr_authToken, err
+		header, strings.NewReader(data.Encode()), &authToken); err != nil {
+		return &authToken, err
 	}
-	return ptr_authToken, nil
+	return &authToken, nil
 }
