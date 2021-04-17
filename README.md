@@ -12,8 +12,8 @@ Go(lang) library to speed up your BCA (Bank Central Asia) API integration proces
 import (
 	"context"
 
-	"github.com/ianeinser/go-bca"
-	"github.com/ianeinser/go-bca/business"
+	"github.com/ianeinser/bca-api-go"
+	"github.com/ianeinser/bca-api-go/business"
 )
 
 func main() {
@@ -24,18 +24,18 @@ func main() {
 		APIKey:       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		APISecret:    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		CorporateID:  "BCAAPI2016", //Based on API document
-		OriginHost:   "localhost",
+		OriginHost:   "localhost", // CORS
 	}
 	businessClient := business.NewClient(cfg)
 	authClient := auth.NewClient(cfg)
 
 	ctx := context.Background()
-	authToken, err := authClient.GetToken(ctx)
+	ptr_authToken, err := authClient.GetToken(ctx)
 	if err != nil {
 		panic(err)
 	}
 
-    businessClient.AccessToken = authToken.AccessToken
+    businessClient.AccessToken = (*ptr_authToken).AccessToken
 
     ctx := context.Background()
     response, err := client.GetBalanceInfo(ctx, []string{"0201245680", "0063001004"})
