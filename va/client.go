@@ -4,7 +4,7 @@ import (
 	"context"
 	"net/url"
 
-	bca "github.com/ianeinser/go-bca"
+	bca "github.com/ianeinser/bca-api-go"
 )
 
 //Client is used to invoke BCA Virtual Account API
@@ -23,27 +23,27 @@ func NewClient(config bca.Config) Client {
 }
 
 //VAInquiryStatusPayment is used to see the list of payment status that are owned by the customers. The data will be automatically queried between D-day (hari H) until D-2 day (H-2 / the day before yesterday), with maximum records returned are 10 rows
-func (c Client) VAInquiryStatusPayment(ctx context.Context, request bca.VAInquiryStatusPaymentRequest) (bca.VAInquiryStatusPaymentResponse, error) {
-	var response bca.VAInquiryStatusPaymentResponse
+func (c *Client) VAInquiryStatusPayment(ctx context.Context, ptr_vaInquiryStatusPaymentRequest *bca.VAInquiryStatusPaymentRequest) (*bca.VAInquiryStatusPaymentResponse, error) {
+	var ptr_vaInquiryStatusPaymentResponse *bca.VAInquiryStatusPaymentResponse
 	path := "/va/payments"
 
 	v := url.Values{}
-	v.Add("CompanyCode", request.CompanyCode)
+	v.Add("CompanyCode", (*ptr_vaInquiryStatusPaymentRequest).CompanyCode)
 
-	if request.CustomerNumber != "" {
-		v.Add("CustomerNumber", request.CustomerNumber)
+	if (*ptr_vaInquiryStatusPaymentRequest).CustomerNumber != "" {
+		v.Add("CustomerNumber", (*ptr_vaInquiryStatusPaymentRequest).CustomerNumber)
 	}
 
-	if request.RequestID != "" {
-		v.Add("RequestId", request.RequestID)
+	if (*ptr_vaInquiryStatusPaymentRequest).RequestID != "" {
+		v.Add("RequestId", (*ptr_vaInquiryStatusPaymentRequest).RequestID)
 
 	}
 
 	path += "?" + v.Encode()
 
-	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, ptr_vaInquiryStatusPaymentResponse); err != nil {
+		return ptr_vaInquiryStatusPaymentResponse, err
 	}
-	return response, nil
+	return ptr_vaInquiryStatusPaymentResponse, nil
 
 }

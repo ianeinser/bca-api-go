@@ -2,14 +2,14 @@ package bca
 
 import "time"
 
-//BBBalanceInformationRequest is to get your KlikBCA Bisnis account balance information with maximum of 20 accounts in a request
-type BBBalanceInformationRequest struct {
+//BalanceInformationRequest is to get your KlikBCA Bisnis account balance information with maximum of 20 accounts in a request
+type BalanceInformationRequest struct {
 	CorporateID   string
 	AccountNumber string
 }
 
 //BalanceSuccessBBBalanceInformationResponse represents account balance details when it is successfully retrieved
-type BalanceSuccessBBBalanceInformationResponse struct {
+type BalanceSuccessBalanceInformationResponse struct {
 	AccountNumber    string
 	Currency         string
 	Balance          float64 `json:",string"`
@@ -22,21 +22,21 @@ type BalanceSuccessBBBalanceInformationResponse struct {
 }
 
 //BalanceFailedBBBalanceInformationResponse represents account balance details when it cannot be retrieved
-type BalanceFailedBBBalanceInformationResponse struct {
+type BalanceFailedBalanceInformationResponse struct {
 	Indonesian    string
 	English       string
 	AccountNumber string
 }
 
-//BBBalanceInformationResponse is to get your KlikBCA Bisnis account balance information with maximum of 20 accounts in a request
-type BBBalanceInformationResponse struct {
+//BalanceInformationResponse is to get your KlikBCA Bisnis account balance information with maximum of 20 accounts in a request
+type BalanceInformationResponse struct {
 	Error
-	AccountDetailDataSuccess []BalanceSuccessBBBalanceInformationResponse `json:",omitempty"`
-	AccountDetailDataFailed  []BalanceFailedBBBalanceInformationResponse  `json:",omitempty"`
+	AccountDetailDataSuccess []BalanceSuccessBalanceInformationResponse `json:",omitempty"`
+	AccountDetailDataFailed  []BalanceFailedBalanceInformationResponse  `json:",omitempty"`
 }
 
-//BBAccountStatementRequest is to get your KlikBCA Bisnis account statement for a period up to 31 days
-type BBAccountStatementRequest struct {
+//AccountStatementRequest is to get your KlikBCA Bisnis account statement for a period up to 31 days
+type AccountStatementRequest struct {
 	CorporateID   string
 	AccountNumber string
 	StartDate     time.Time
@@ -53,8 +53,8 @@ type AccountStatement struct {
 	Trailer           string
 }
 
-//BBAccountStatementResponse is to get your KlikBCA Bisnis account statement for a period up to 31 days
-type BBAccountStatementResponse struct {
+//AccountStatementResponse is to get your KlikBCA Bisnis account statement for a period up to 31 days
+type AccountStatementResponse struct {
 	Error
 	Currency     string
 	StartBalance float64 `json:",string"`
@@ -63,8 +63,8 @@ type BBAccountStatementResponse struct {
 	Data         []AccountStatement
 }
 
-//BBFundTransferRequest is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate’s own deposit account. The recipient may be any deposit account within BCA
-type BBFundTransferRequest struct {
+//FundTransferRequest is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate’s own deposit account. The recipient may be any deposit account within BCA
+type FundTransferRequest struct {
 	CorporateID              string
 	SourceAccountNumber      string
 	TransactionID            string
@@ -77,8 +77,8 @@ type BBFundTransferRequest struct {
 	Remark2                  string
 }
 
-//BBFundTransferResponse is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate’s own deposit account. The recipient may be any deposit account within BCA
-type BBFundTransferResponse struct {
+//FundTransferResponse is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate’s own deposit account. The recipient may be any deposit account within BCA
+type FundTransferResponse struct {
 	Error
 	TransactionID   string
 	TransactionDate string
@@ -86,8 +86,8 @@ type BBFundTransferResponse struct {
 	Status          string
 }
 
-//BBDomesticFundTransferRequest is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate's own deposit account. The recipient may be any deposit account within domestic bank except BCA.
-type BBDomesticFundTransferRequest struct {
+//DomesticFundTransferRequest is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate's own deposit account. The recipient may be any deposit account within domestic bank except BCA.
+type DomesticFundTransferRequest struct {
 	TransactionID            string
 	TransactionDate          string
 	ReferenceID              string
@@ -105,8 +105,8 @@ type BBDomesticFundTransferRequest struct {
 	BeneficiaryEmail         string
 }
 
-//BBDomesticFundTransferResponse is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate's own deposit account. The recipient may be any deposit account within domestic bank except BCA.
-type BBDomesticFundTransferResponse struct {
+//DomesticFundTransferResponse is to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate's own deposit account. The recipient may be any deposit account within domestic bank except BCA.
+type DomesticFundTransferResponse struct {
 	Error
 	TransactionID   string
 	TransactionDate string
@@ -114,34 +114,34 @@ type BBDomesticFundTransferResponse struct {
 	PPUNumber       string
 }
 
-//BBAccountStatementOfflineRequest is to get your bulk statement in form of file for a period up to 7 days
-type BBAccountStatementOfflineRequest struct {
+//AccountStatementOfflineRequest is to get your bulk statement in form of file for a period up to 7 days
+type AccountStatementOfflineRequest struct {
 	AccountNumber string
 	StartDate     time.Time
 	EndDate       time.Time
 }
 
-//BBAccountStatementOfflineResponse is to get your bulk statement in form of file for a period up to 7 days
-type BBAccountStatementOfflineResponse struct {
+//AccountStatementOfflineResponse is to get your bulk statement in form of file for a period up to 7 days
+type AccountStatementOfflineResponse struct {
 	RequestID  string
 	ResponseWS string
 }
 
-//BBInquiryTransferStatusRequest is to get fund transfer status
-type BBInquiryTransferStatusRequest struct {
+//InquiryTransferStatusRequest is to get fund transfer status
+type InquiryTransferStatusRequest struct {
 	TransactionID   string
 	TransactionDate time.Time
 	TransferType    string
 }
 
-//ReasonBBInquiryTransferStatusResponse represents
-type ReasonBBInquiryTransferStatusResponse struct {
+//ReasonInquiryTransferStatusResponse represents
+type ReasonInquiryTransferStatusResponse struct {
 	English    string
 	Indonesian string
 }
 
 //BBInquiryTransferStatusResponse is to get fund transfer status
-type BBInquiryTransferStatusResponse struct {
+type InquiryTransferStatusResponse struct {
 	Error
 	TransactionID            string
 	TransactionDate          time.Time
@@ -151,17 +151,17 @@ type BBInquiryTransferStatusResponse struct {
 	CurrencyCode             string
 	Amount                   float64 `json:",string"`
 	StatusCode               string
-	Reason                   ReasonBBInquiryTransferStatusResponse
+	Reason                   ReasonInquiryTransferStatusResponse
 }
 
-//BBInquiryDomesticAccountRequest is to get beneficiary account information including beneficiary account name
-type BBInquiryDomesticAccountRequest struct {
+//InquiryDomesticAccountRequest is to get beneficiary account information including beneficiary account name
+type InquiryDomesticAccountRequest struct {
 	BeneficiaryAccountNumber string
 	BeneficiaryBankCode      string
 }
 
-//BBInquiryDomesticAccountResponse is to get beneficiary account information including beneficiary account name
-type BBInquiryDomesticAccountResponse struct {
+//InquiryDomesticAccountResponse is to get beneficiary account information including beneficiary account name
+type InquiryDomesticAccountResponse struct {
 	BeneficiaryBankCode      string
 	BeneficiaryAccountNumber string
 	BeneficiaryAccountName   string

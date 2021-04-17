@@ -7,7 +7,7 @@ import (
 	"net/url"
 	"strings"
 
-	bca "github.com/ianeinser/go-bca"
+	bca "github.com/ianeinser/bca-api-go"
 )
 
 //Client is used to invoke BCA OAuth 2.0 API
@@ -27,7 +27,7 @@ func NewClient(config bca.Config) Client {
 }
 
 //GetToken is used to get OAuth 2.0 token
-func (c Client) GetToken(ctx context.Context) (bca.AuthToken, error) {
+func (c *Client) GetToken(ctx context.Context) (*bca.AuthToken, error) {
 	path := "/api/oauth/token"
 
 	header := http.Header{}
@@ -36,10 +36,10 @@ func (c Client) GetToken(ctx context.Context) (bca.AuthToken, error) {
 	data := url.Values{}
 	data.Add("grant_type", "client_credentials")
 
-	var response bca.AuthToken
+	var ptr_authToken *bca.AuthToken
 	if err := c.Client.CallRaw("POST", path, "application/x-www-form-urlencoded",
-		header, strings.NewReader(data.Encode()), &response); err != nil {
-		return response, err
+		header, strings.NewReader(data.Encode()), ptr_authToken); err != nil {
+		return ptr_authToken, err
 	}
-	return response, nil
+	return ptr_authToken, nil
 }

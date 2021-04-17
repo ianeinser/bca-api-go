@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/url"
 
-	bca "github.com/ianeinser/go-bca"
+	bca "github.com/ianeinser/bca-api-go"
 )
 
 var (
@@ -33,60 +33,60 @@ func NewClient(config bca.Config) Client {
 	}
 }
 
-//BBBalanceInformation is used to Get your KlikBCA Bisnis account balance information with maximum of 20 accounts in a request
-func (c Client) BBBalanceInformation(ctx context.Context, request bca.BBBalanceInformationRequest) (bca.BBBalanceInformationResponse, error) {
-	var response bca.BBBalanceInformationResponse
-	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s", request.CorporateID, request.AccountNumber)
+//BalanceInformation is used to Get your KlikBCA Bisnis account balance information with maximum of 20 accounts in a request
+func (c *Client) BalanceInformation(ctx context.Context, ptr_balanceInformationRequest *bca.BalanceInformationRequest) (*bca.BalanceInformationResponse, error) {
+	var ptr_balanceInformationResponse *bca.BalanceInformationResponse
+	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s", (*ptr_balanceInformationRequest).CorporateID, (*ptr_balanceInformationRequest).AccountNumber)
 
-	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, ptr_balanceInformationResponse); err != nil {
+		return ptr_balanceInformationResponse, err
 	}
-	return response, nil
+	return ptr_balanceInformationResponse, nil
 }
 
-//BBAccountStatement is used to get your KlikBCA Bisnis account statement for a period up to 31 days
-func (c Client) BBAccountStatement(ctx context.Context, request bca.BBAccountStatementRequest) (bca.BBAccountStatementResponse, error) {
-	var response bca.BBAccountStatementResponse
-	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s/statements", request.CorporateID, request.AccountNumber)
+//AccountStatement is used to get your KlikBCA Bisnis account statement for a period up to 31 days
+func (c *Client) AccountStatement(ctx context.Context, ptr_accountStatementRequest *bca.AccountStatementRequest) (*bca.AccountStatementResponse, error) {
+	var ptr_accountStatementResponse *bca.AccountStatementResponse
+	path := fmt.Sprintf("/banking/v3/corporates/%s/accounts/%s/statements", (*ptr_accountStatementRequest).CorporateID, (*ptr_accountStatementRequest).AccountNumber)
 
-	startDate := request.StartDate
-	endDate := request.EndDate
+	startDate := (*ptr_accountStatementRequest).StartDate
+	endDate := (*ptr_accountStatementRequest).EndDate
 
 	v := url.Values{}
 	v.Add("StartDate", startDate.Format("2006-01-02"))
 	v.Add("EndDate", endDate.Format("2006-01-02"))
 	path += "?" + v.Encode()
 
-	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("GET", path, c.AccessToken, nil, nil, ptr_accountStatementResponse); err != nil {
+		return ptr_accountStatementResponse, err
 	}
-	return response, nil
+	return ptr_accountStatementResponse, nil
 }
 
-//BBFundTransfer is used to send fund transfer instructions to BCA using this service. The source of fund transfer must be from corporate’s own deposit account. The recipient may be any deposit account within BCA
-func (c Client) BBFundTransfer(ctx context.Context, request bca.BBFundTransferRequest) (bca.BBFundTransferResponse, error) {
-	var response bca.BBFundTransferResponse
+//FundTransfer is used to send fund transfer instructions to BCA using this service. The source of fund transfer must be from corporate’s own deposit account. The recipient may be any deposit account within BCA
+func (c *Client) FundTransfer(ctx context.Context, ptr_fundTransferRequest *bca.FundTransferRequest) (*bca.FundTransferResponse, error) {
+	var ptr_fundTransferResponse *bca.FundTransferResponse
 
-	jsonReq, err := json.Marshal(request)
+	jsonReq, err := json.Marshal(*ptr_fundTransferRequest)
 	if err != nil {
-		return response, err
+		return ptr_fundTransferResponse, err
 	}
 
 	path := "/banking/corporates/transfers"
 
-	if err := c.Client.Call("POST", path, c.AccessToken, nil, jsonReq, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("POST", path, c.AccessToken, nil, jsonReq, ptr_fundTransferResponse); err != nil {
+		return ptr_fundTransferResponse, err
 	}
-	return response, nil
+	return ptr_fundTransferResponse, nil
 }
 
-//BBDomesticFundTransfer is used to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate's own deposit account. The recipient may be any deposit account within domestic bank except BCA
-func (c Client) BBDomesticFundTransfer(ctx context.Context, request bca.BBDomesticFundTransferRequest) (bca.BBDomesticFundTransferResponse, error) {
-	var response bca.BBDomesticFundTransferResponse
+//DomesticFundTransfer is used to send fund transfer instructions to BCA using this service. The source of fund transfer must be from your corporate's own deposit account. The recipient may be any deposit account within domestic bank except BCA
+func (c *Client) DomesticFundTransfer(ctx context.Context, ptr_domesticFundTransferRequest *bca.DomesticFundTransferRequest) (*bca.DomesticFundTransferResponse, error) {
+	var ptr_domesticFundTransferResponse *bca.DomesticFundTransferResponse
 
-	jsonReq, err := json.Marshal(request)
+	jsonReq, err := json.Marshal(*ptr_domesticFundTransferRequest)
 	if err != nil {
-		return response, err
+		return ptr_domesticFundTransferResponse, err
 	}
 
 	path := "/banking/corporates/transfers/domestic"
@@ -96,19 +96,19 @@ func (c Client) BBDomesticFundTransfer(ctx context.Context, request bca.BBDomest
 		httpHeaderCredentialID: c.CredentialID,
 	}
 
-	if err := c.Client.Call("POST", path, c.AccessToken, headers, jsonReq, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("POST", path, c.AccessToken, headers, jsonReq, ptr_domesticFundTransferResponse); err != nil {
+		return ptr_domesticFundTransferResponse, err
 	}
-	return response, nil
+	return ptr_domesticFundTransferResponse, nil
 }
 
-//BBAccountStatementOffline is used to get your bulk statement in form of file for a period up to 7 days
-func (c Client) BBAccountStatementOffline(ctx context.Context, request bca.BBAccountStatementOfflineRequest) (bca.BBAccountStatementOfflineResponse, error) {
-	var response bca.BBAccountStatementOfflineResponse
-	path := fmt.Sprintf("/banking/offline/corporates/accounts/%s/filestatements", request.AccountNumber)
+//AccountStatementOffline is used to get your bulk statement in form of file for a period up to 7 days
+func (c *Client) AccountStatementOffline(ctx context.Context, ptr_accountStatementOfflineRequest *bca.AccountStatementOfflineRequest) (*bca.AccountStatementOfflineResponse, error) {
+	var ptr_accountStatementOfflineResponse *bca.AccountStatementOfflineResponse
+	path := fmt.Sprintf("/banking/offline/corporates/accounts/%s/filestatements", (*ptr_accountStatementOfflineRequest).AccountNumber)
 
-	startDate := request.StartDate
-	endDate := request.EndDate
+	startDate := (*ptr_accountStatementOfflineRequest).StartDate
+	endDate := (*ptr_accountStatementOfflineRequest).EndDate
 
 	v := url.Values{}
 	v.Add("StartDate", startDate.Format("2006-01-02"))
@@ -120,22 +120,22 @@ func (c Client) BBAccountStatementOffline(ctx context.Context, request bca.BBAcc
 		httpHeaderCredentialID: c.CredentialID,
 	}
 
-	if err := c.Client.Call("GET", path, c.AccessToken, headers, nil, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("GET", path, c.AccessToken, headers, nil, ptr_accountStatementOfflineResponse); err != nil {
+		return ptr_accountStatementOfflineResponse, err
 	}
-	return response, nil
+	return ptr_accountStatementOfflineResponse, nil
 }
 
-//BBInquiryTransferStatus is used to get fund transfer status
-func (c Client) BBInquiryTransferStatus(ctx context.Context, request bca.BBInquiryTransferStatusRequest) (bca.BBInquiryTransferStatusResponse, error) {
-	var response bca.BBInquiryTransferStatusResponse
-	path := fmt.Sprintf("/banking/corporates/transfers/status/%s", request.TransactionID)
+//InquiryTransferStatus is used to get fund transfer status
+func (c *Client) InquiryTransferStatus(ctx context.Context, ptr_inquiryTransferStatusRequest *bca.InquiryTransferStatusRequest) (*bca.InquiryTransferStatusResponse, error) {
+	var ptr_inquiryTransferStatusResponse *bca.InquiryTransferStatusResponse
+	path := fmt.Sprintf("/banking/corporates/transfers/status/%s", (*ptr_inquiryTransferStatusRequest).TransactionID)
 
-	transactionDate := request.TransactionDate
+	transactionDate := (*ptr_inquiryTransferStatusRequest).TransactionDate
 
 	v := url.Values{}
 	v.Add("TransactionDate", transactionDate.Format("2006-01-02"))
-	v.Add("TransferType", request.TransferType)
+	v.Add("TransferType", (*ptr_inquiryTransferStatusRequest).TransferType)
 	path += "?" + v.Encode()
 
 	headers := map[string]string{
@@ -143,24 +143,24 @@ func (c Client) BBInquiryTransferStatus(ctx context.Context, request bca.BBInqui
 		httpHeaderCredentialID: c.CredentialID,
 	}
 
-	if err := c.Client.Call("GET", path, c.AccessToken, headers, nil, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("GET", path, c.AccessToken, headers, nil, ptr_inquiryTransferStatusResponse); err != nil {
+		return ptr_inquiryTransferStatusResponse, err
 	}
-	return response, nil
+	return ptr_inquiryTransferStatusResponse, nil
 }
 
-//BBInquiryDomesticAccount is used to get beneficiary account information including beneficiary account name
-func (c Client) BBInquiryDomesticAccount(ctx context.Context, request bca.BBInquiryDomesticAccountRequest) (bca.BBInquiryDomesticAccountResponse, error) {
-	var response bca.BBInquiryDomesticAccountResponse
-	path := fmt.Sprintf("/banking/corporates/transfers/v2/domestic/beneficiaries/banks/%s/accounts/%s", request.BeneficiaryBankCode, request.BeneficiaryAccountNumber)
+//InquiryDomesticAccount is used to get beneficiary account information including beneficiary account name
+func (c *Client) InquiryDomesticAccount(ctx context.Context, ptr_inquiryDomesticAccountRequest *bca.InquiryDomesticAccountRequest) (*bca.InquiryDomesticAccountResponse, error) {
+	var ptr_inquiryDomesticAccountResponse *bca.InquiryDomesticAccountResponse
+	path := fmt.Sprintf("/banking/corporates/transfers/v2/domestic/beneficiaries/banks/%s/accounts/%s", (*ptr_inquiryDomesticAccountRequest).BeneficiaryBankCode, (*ptr_inquiryDomesticAccountRequest).BeneficiaryAccountNumber)
 
 	headers := map[string]string{
 		httpHeaderChannelID:    c.ChannelID,
 		httpHeaderCredentialID: c.CredentialID,
 	}
 
-	if err := c.Client.Call("GET", path, c.AccessToken, headers, nil, &response); err != nil {
-		return response, err
+	if err := c.Client.Call("GET", path, c.AccessToken, headers, nil, ptr_inquiryDomesticAccountResponse); err != nil {
+		return ptr_inquiryDomesticAccountResponse, err
 	}
-	return response, nil
+	return ptr_inquiryDomesticAccountResponse, nil
 }
