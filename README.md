@@ -3,7 +3,7 @@
 [![Library Status](https://img.shields.io/badge/status-unofficial-yellow.svg)]()
 [![Go Report Card](https://goreportcard.com/badge/github.com/ianeinser/bca-api-go)](https://goreportcard.com/report/github.com/ianeinser/bca-api-go)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/ianeinser/go-bca.svg?branch=master)](https://travis-ci.org/ianeinser/go-bca)
+[![Build Status](https://travis-ci.org/ianeinser/bca-api-go.svg?branch=master)](https://travis-ci.org/ianeinser/bca-api-go)
 
 Go(lang) library to speed up your BCA (Bank Central Asia) API integration process. See this [official documentation of BCA API](https://developer.bca.co.id/documentation/)
 
