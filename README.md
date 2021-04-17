@@ -1,9 +1,9 @@
 # 🏦 BCA (Bank Central Asia) API's Go Library
 
 [![Library Status](https://img.shields.io/badge/status-unofficial-yellow.svg)]()
-[![Go Report Card](https://goreportcard.com/badge/github.com/ianeinser/go-bca)](https://goreportcard.com/report/github.com/ianeinser/go-bca)
+[![Go Report Card](https://goreportcard.com/badge/github.com/ianeinser/bca-api-go)](https://goreportcard.com/report/github.com/ianeinser/bca-api-go)
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](LICENSE)
-[![Build Status](https://travis-ci.org/ianeinser/go-bca.svg?branch=master)](https://travis-ci.org/ianeinser/go-bca)
+[![Build Status](https://travis-ci.org/ianeinser/bca-api-go.svg?branch=master)](https://travis-ci.org/ianeinser/bca-api-go)
 
 Go(lang) library to speed up your BCA (Bank Central Asia) API integration process. See this [official documentation of BCA API](https://developer.bca.co.id/documentation/)
 
@@ -12,8 +12,8 @@ Go(lang) library to speed up your BCA (Bank Central Asia) API integration proces
 import (
 	"context"
 
-	"github.com/ianeinser/go-bca"
-	"github.com/ianeinser/go-bca/business"
+	"github.com/ianeinser/bca-api-go"
+	"github.com/ianeinser/bca-api-go/business"
 )
 
 func main() {
@@ -24,18 +24,18 @@ func main() {
 		APIKey:       "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		APISecret:    "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx",
 		CorporateID:  "BCAAPI2016", //Based on API document
-		OriginHost:   "localhost",
+		OriginHost:   "localhost", // CORS
 	}
 	businessClient := business.NewClient(cfg)
 	authClient := auth.NewClient(cfg)
 
 	ctx := context.Background()
-	authToken, err := authClient.GetToken(ctx)
+	ptr_authToken, err := authClient.GetToken(ctx)
 	if err != nil {
 		panic(err)
 	}
 
-    businessClient.AccessToken = authToken.AccessToken
+    businessClient.AccessToken = (*ptr_authToken).AccessToken
 
     ctx := context.Background()
     response, err := client.GetBalanceInfo(ctx, []string{"0201245680", "0063001004"})
