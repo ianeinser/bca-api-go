@@ -39,6 +39,9 @@ func main() {
 
     ctx := context.Background()
     ptr_balanceInfo, err := client.GetBalanceInfo(ctx, []string{"0201245680", "0063001004"})
+
+	fmt.Println(*ptr_balanceInfo)
+	
 }
 ```
 
@@ -50,3 +53,7 @@ Please proceed there for more detail on how to run the example.
 ## License
 
 See [LICENSE](LICENSE).
+
+## Contribution
+
+
