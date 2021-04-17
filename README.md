@@ -38,7 +38,7 @@ func main() {
     businessClient.AccessToken = (*ptr_authToken).AccessToken
 
     ctx := context.Background()
-    response, err := client.GetBalanceInfo(ctx, []string{"0201245680", "0063001004"})
+    ptr_balanceInfo, err := client.GetBalanceInfo(ctx, []string{"0201245680", "0063001004"})
 }
 ```
 
