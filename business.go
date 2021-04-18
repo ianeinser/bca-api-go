@@ -90,7 +90,6 @@ type FundTransferResponse struct {
 type DomesticFundTransferRequest struct {
 	TransactionID            string
 	TransactionDate          string
-	ReferenceID              string
 	SourceAccountNumber      string
 	BeneficiaryAccountNumber string
 	BeneficiaryBankCode      string
@@ -140,7 +139,7 @@ type ReasonInquiryTransferStatusResponse struct {
 	Indonesian string
 }
 
-//BBInquiryTransferStatusResponse is to get fund transfer status
+//InquiryTransferStatusResponse is to get fund transfer status
 type InquiryTransferStatusResponse struct {
 	Error
 	TransactionID            string
