@@ -1,21 +1,21 @@
 package bca
 
-//VAInquiryStatusPaymentRequest represents Virtual Account payment status request message
-type VAInquiryStatusPaymentRequest struct {
+//InquiryStatusPaymentRequest represents Virtual Account payment status request message
+type InquiryStatusPaymentRequest struct {
 	CompanyCode    string
 	CustomerNumber string
 	RequestID      string
 }
 
-//BillVAInquiryStatusPaymentResponse represents bills details to retrieve Virtual Account payment status
-type BillVAInquiryStatusPaymentResponse struct {
+//DetailsBill represents bills details to retrieve Virtual Account payment status
+type DetailsBill struct {
 	BillReference string
 	BillNumber    string
 }
 
-//TransactionVAInquiryStatusPaymentResponse represents Virtual Account transaction info
-type TransactionVAInquiryStatusPaymentResponse struct {
-	DetailBills       []BillVAInquiryStatusPaymentResponse
+//VAInquiryStatusPaymentResponse represents Virtual Account transaction info
+type VAInquiryStatusPaymentResponse struct {
+	DetailBills       []DetailsBill
 	RequestID         string
 	TransactionDate   string
 	PaymentFlagStatus string
@@ -25,7 +25,7 @@ type TransactionVAInquiryStatusPaymentResponse struct {
 }
 
 //VAInquiryStatusPaymentResponse represents Virtual Account payment status response message
-type VAInquiryStatusPaymentResponse struct {
+type InquiryStatusPaymentResponse struct {
 	Error
-	TransactionData []TransactionVAInquiryStatusPaymentResponse
+	TransactionData []InquiryStatusPaymentResponse
 }

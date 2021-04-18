@@ -9,8 +9,8 @@ type Auth struct {
 	LocalID     string
 }
 
-//SenderTTAccountRequest represents sender details used in TTAccountRequest
-type SenderTTAccountRequest struct {
+//SenderAccountRequest represents sender details used in TTAccountRequest
+type SenderAccountRequest struct {
 	FirstName            string
 	LastName             string
 	DateOfBirth          string
@@ -26,8 +26,8 @@ type SenderTTAccountRequest struct {
 	AccountNumber        string
 }
 
-//BeneficiaryTTAccountRequest represents beneficiary details used in TTAccountRequest
-type BeneficiaryTTAccountRequest struct {
+//BeneficiaryAccountRequest represents beneficiary details used in TTAccountRequest
+type BeneficiaryAccountRequest struct {
 	Name                 string
 	DateOfBirth          string
 	Address1             string
@@ -50,7 +50,7 @@ type BeneficiaryTTAccountRequest struct {
 }
 
 //TransactionTTAccountRequest represents transaction details used in TTAccountRequest
-type TransactionTTAccountRequest struct {
+type TransactionAccountRequest struct {
 	CurrencyID      string
 	Amount          float64 `json:",string"`
 	PurposeCode     string
@@ -61,23 +61,23 @@ type TransactionTTAccountRequest struct {
 	FormNumber      string
 }
 
-//TTAccountRequest is to provides service transaction “Transaction to BCA’s Account” and also “Transfer to Other Bank”
-type TTAccountRequest struct {
+//TeleTransferAccountRequest is to provides service transaction “Transaction to BCA’s Account” and also “Transfer to Other Bank”
+type TeleTransferAccountRequest struct {
 	Authentication     Auth
-	SenderDetails      SenderTTAccountRequest
-	BeneficiaryDetails BeneficiaryTTAccountRequest
-	TransactionDetails TransactionTTAccountRequest
+	SenderDetails      SenderAccountRequest
+	BeneficiaryDetails BeneficiaryAccountRequest
+	TransactionDetails TransactionAccountRequest
 }
 
 //BeneficiaryTTAccountResponse represents beneficiary details for response message
-type BeneficiaryTTAccountResponse struct {
+type BeneficiaryAccountResponse struct {
 	Name                  string
 	AccountNumber         string
 	ServerBeneAccountName string
 }
 
 //TransactionTTAccountResponse represents transaction details for response message
-type TransactionTTAccountResponse struct {
+type TransactionAccountResponse struct {
 	CurrencyID        string
 	Amount            float64 `json:",string"`
 	Description1      string
@@ -90,92 +90,92 @@ type TransactionTTAccountResponse struct {
 }
 
 //TTAccountResponse is to provide service transaction “Transaction to BCA’s Account” and also “Transfer to Other Bank”
-type TTAccountResponse struct {
+type TeleTransferAccountResponse struct {
 	Error
-	BeneficiaryDetails BeneficiaryTTAccountResponse
-	TransactionDetails TransactionTTAccountResponse
+	BeneficiaryDetails BeneficiaryAccountResponse
+	TransactionDetails TransactionAccountResponse
 	StatusTransaction  string
 	StatusMessage      string
 }
 
-//BeneficiaryTTInquiryAccountRequest represents beneficiary details to inquire account(s)
-type BeneficiaryTTInquiryAccountRequest struct {
+//BeneficiaryInquiryAccountRequest represents beneficiary details to inquire account(s)
+type BeneficiaryInquiryAccountRequest struct {
 	BankCodeType  string
 	BankCodeValue string
 	AccountNumber string
 }
 
-//TTInquiryAccountRequest is to provide service to Inquiry BCA’s Account name or Other Bank Switching’s Account name.
-type TTInquiryAccountRequest struct {
+//InquiryAccountRequest is to provide service to Inquiry BCA’s Account name or Other Bank Switching’s Account name.
+type InquiryAccountRequest struct {
 	Authentication     Auth
-	BeneficiaryDetails BeneficiaryTTInquiryAccountRequest
+	BeneficiaryDetails BeneficiaryInquiryAccountRequest
 }
 
-//BeneficiaryTTInquiryAccountResponse represents response payload to inquire accounts
-type BeneficiaryTTInquiryAccountResponse struct {
+//BeneficiaryInquiryAccountResponse represents response payload to inquire accounts
+type BeneficiaryInquiryAccountResponse struct {
 	ServerBeneAccountName string
 }
 
-//TTInquiryAccountResponse is to provide service to Inquiry BCA’s Account name or Other Bank Switching’s Account name.
-type TTInquiryAccountResponse struct {
+//InquiryAccountResponse is to provide service to Inquiry BCA’s Account name or Other Bank Switching’s Account name.
+type InquiryAccountResponse struct {
 	Error
-	BeneficiaryDetails BeneficiaryTTInquiryAccountResponse
+	BeneficiaryDetails BeneficiaryInquiryAccountResponse
 	StatusTransaction  string
 	StatusMessage      string
 }
 
-//FITTInquiryAccountBalanceRequest represents FID details to inquire account balance
-type FITTInquiryAccountBalanceRequest struct {
+//InquiryAccountBalanceRequest represents FID details to inquire account balance
+type FIInquiryAccountBalanceRequest struct {
 	AccountNumber string
 }
 
-//TTInquiryAccountBalanceRequest is to provide service to Inquiry balance for Vostro’s Account.
-type TTInquiryAccountBalanceRequest struct {
+//InquiryAccountBalanceRequest is to provide service to Inquiry balance for Vostro’s Account.
+type InquiryAccountBalanceRequest struct {
 	Authentication Auth
-	FIDetails      FITTInquiryAccountBalanceRequest
+	FIDetails      FIInquiryAccountBalanceRequest
 }
 
-//FITTInquiryAccountBalanceResponse represents FID details in response message
-type FITTInquiryAccountBalanceResponse struct {
+//FIInquiryAccountBalanceResponse represents FID details in response message
+type FIInquiryAccountBalanceResponse struct {
 	CurrencyID     string
 	AccountBalance float64 `json:",string"`
 }
 
 //TTInquiryAccountBalanceResponse is to provide service to Inquiry balance for Vostro’s Account.
-type TTInquiryAccountBalanceResponse struct {
+type InquiryAccountBalanceResponse struct {
 	Error
-	FIDetails         FITTInquiryAccountBalanceResponse
+	FIDetails         FIInquiryAccountBalanceResponse
 	StatusTransaction string
 	StatusMessage     string
 }
 
 //TransactionTTInquiryTransactionRequest represents transaction details to inquire transaction
-type TransactionTTInquiryTransactionRequest struct {
+type TransactionInquiryTransactionRequest struct {
 	InquiryBy    string
 	InquiryValue string
 }
 
-//TTInquiryTransactionRequest is to provide service to Inquiry Transaction that has been submitted before
-type TTInquiryTransactionRequest struct {
+//InquiryTransactionRequest is to provide service to Inquiry Transaction that has been submitted before
+type InquiryTransactionRequest struct {
 	Authentication     Auth
-	TransactionDetails TransactionTTInquiryTransactionRequest
+	TransactionDetails TransactionInquiryTransactionRequest
 }
 
-//SenderTTInquiryTransactionResponse represents sender details for response message
-type SenderTTInquiryTransactionResponse struct {
+//SenderInquiryTransactionResponse represents sender details for response message
+type SenderInquiryTransactionResponse struct {
 	FirstName string
 	LastName  string
 }
 
-//BeneficiaryTTInquiryTransactionResponse represents beneficiary details for response message
-type BeneficiaryTTInquiryTransactionResponse struct {
+//BeneficiaryInquiryTransactionResponse represents beneficiary details for response message
+type BeneficiaryInquiryTransactionResponse struct {
 	Name          string
 	BankCodeType  string
 	BankCodeValue string
 	AccountNumber string
 }
 
-//TransactionTTInquiryTransactionResponse represents transaction details for response message
+//TransactionInquiryTransactionResponse represents transaction details for response message
 type TransactionTTInquiryTransactionResponse struct {
 	AmountPaid      float64 `json:",string"`
 	CurrencyID      string
@@ -188,18 +188,18 @@ type TransactionTTInquiryTransactionResponse struct {
 	Description2    string
 }
 
-//TTInquiryTransactionResponse is to provide service to Inquiry Transaction that has been submitted before
-type TTInquiryTransactionResponse struct {
+//InquiryTransactionResponse is to provide service to Inquiry Transaction that has been submitted before
+type InquiryTransactionResponse struct {
 	Error
-	SenderDetails      SenderTTInquiryTransactionResponse
-	BeneficiaryDetails BeneficiaryTTInquiryTransactionResponse
+	SenderDetails      SenderInquiryTransactionResponse
+	BeneficiaryDetails BeneficiaryInquiryTransactionResponse
 	TransactionDetails TransactionTTInquiryTransactionResponse
 	StatusTransaction  string
 	StatusMessage      string
 }
 
-//SenderTTCashTransferRequest represents sender details used in TTCashTransferRequest
-type SenderTTCashTransferRequest struct {
+//SenderTeleTransferCashTransferRequest represents sender details used in TTCashTransferRequest
+type SenderTeleTransferCashTransferRequest struct {
 	FirstName            string
 	LastName             string
 	DateOfBirth          string
@@ -214,8 +214,8 @@ type SenderTTCashTransferRequest struct {
 	IdentificationNumber string
 }
 
-//BeneficiaryTTCashTransferRequest represents beneficiary details used in TTCashTransferRequest
-type BeneficiaryTTCashTransferRequest struct {
+//BeneficiaryTeleTransferCashTransferRequest represents beneficiary details used in TTCashTransferRequest
+type BeneficiaryTeleTransferCashTransferRequest struct {
 	Name                 string
 	DateOfBirth          string
 	Address1             string
@@ -231,8 +231,8 @@ type BeneficiaryTTCashTransferRequest struct {
 	Occupation           string
 }
 
-//TransactionTTCashTransferRequest represents transaction details used in TTCashTransferRequest
-type TransactionTTCashTransferRequest struct {
+//TransactionTeleTransferCashTransferRequest represents transaction details used in TTCashTransferRequest
+type TransactionTeleTransferCashTransferRequest struct {
 	PIN             string
 	SecretQuestion  string
 	SecretAnswer    string
@@ -246,21 +246,21 @@ type TransactionTTCashTransferRequest struct {
 	FormNumber      string
 }
 
-//TTCashTransferRequest is to provide service for transaction “Cash Transfer” to Non account holder.
-type TTCashTransferRequest struct {
+//TeleTransferCashTransferRequest is to provide service for transaction “Cash Transfer” to Non account holder.
+type TeleTransferCashTransferRequest struct {
 	Authentication     Auth
-	SenderDetails      SenderTTCashTransferRequest
-	BeneficiaryDetails BeneficiaryTTCashTransferRequest
-	TransactionDetails TransactionTTCashTransferRequest
+	SenderDetails      SenderTeleTransferCashTransferRequest
+	BeneficiaryDetails BeneficiaryTeleTransferCashTransferRequest
+	TransactionDetails TransactionTeleTransferCashTransferRequest
 }
 
-//BeneficiaryTTCashTransferResponse represents beneficiary details in response message
-type BeneficiaryTTCashTransferResponse struct {
+//BeneficiaryTeleTransferCashTransferResponse represents beneficiary details in response message
+type BeneficiaryTeleTransferCashTransferResponse struct {
 	Name string
 }
 
-//TransactionTTCashTransferResponse represents transaction details in response message
-type TransactionTTCashTransferResponse struct {
+//TransactionTeleTransferCashTransferResponse represents transaction details in response message
+type TransactionTeleTransferCashTransferResponse struct {
 	PIN             string
 	CurrencyID      string
 	Amount          float64 `json:",string"`
@@ -272,16 +272,16 @@ type TransactionTTCashTransferResponse struct {
 }
 
 //TTCashTransferResponse is to provide service for transaction “Cash Transfer” to Non account holder.
-type TTCashTransferResponse struct {
+type TeleTransferCashTransferResponse struct {
 	Error
-	BeneficiaryDetails BeneficiaryTTCashTransferResponse
-	TransactionDetails TransactionTTCashTransferResponse
+	BeneficiaryDetails BeneficiaryTeleTransferCashTransferResponse
+	TransactionDetails TransactionTeleTransferCashTransferResponse
 	StatusTransaction  string
 	StatusMessage      string
 }
 
-//SenderTTAmendCashTransfer represents sender details to amend cash-transfer
-type SenderTTAmendCashTransfer struct {
+//SenderTeleTransferAmendCashTransfer represents sender details to amend cash-transfer
+type SenderTeleTransferAmendCashTransfer struct {
 	FirstName            string
 	LastName             string
 	DateOfBirth          string
@@ -297,7 +297,7 @@ type SenderTTAmendCashTransfer struct {
 }
 
 //BeneficiaryTTAmendCashTransfer represents beneficiary details to amend cash-transfer
-type BeneficiaryTTAmendCashTransfer struct {
+type BeneficiaryTeleTransferAmendCashTransfer struct {
 	Name                 string
 	DateOfBirth          string
 	Address1             string
@@ -313,30 +313,30 @@ type BeneficiaryTTAmendCashTransfer struct {
 	Occupation           string
 }
 
-//Transaction1TTAmendCashTransfer represents transaction details to amend cash-transfer
-type Transaction1TTAmendCashTransfer struct {
+//Transaction1TeleTransferAmendCashTransfer represents transaction details to amend cash-transfer
+type Transaction1TeleTransferAmendCashTransfer struct {
 	Description1   string
 	Description2   string
 	SecretQuestion string
 	SecretAnswer   string
 }
 
-//AmendmentTTAmendCashTransfer represents amendment details to amend cash-transfer
-type AmendmentTTAmendCashTransfer struct {
-	SenderDetails      SenderTTAmendCashTransfer
-	BeneficiaryDetails BeneficiaryTTAmendCashTransfer
-	TransactionDetails Transaction1TTAmendCashTransfer
+//AmendmentTeleTransferAmendCashTransfer represents amendment details to amend cash-transfer
+type AmendmentTeleTransferAmendCashTransfer struct {
+	SenderDetails      SenderTeleTransferAmendCashTransfer
+	BeneficiaryDetails BeneficiaryTeleTransferAmendCashTransfer
+	TransactionDetails Transaction1TeleTransferAmendCashTransfer
 }
 
-//Transaction2TTAmendCashTransfer represents transaction details to amend cash-transfer
+//Transaction2TeleTransferAmendCashTransfer represents transaction details to amend cash-transfer
 type Transaction2TTAmendCashTransfer struct {
 	FormNumber string
 }
 
-//TTAmendCashTransferRequest is to provide service for Amendment “Cash Transfer” to Non account holder
-type TTAmendCashTransferRequest struct {
+//TeleTransferAmendCashTransferRequest is to provide service for Amendment “Cash Transfer” to Non account holder
+type TeleTransferAmendCashTransferRequest struct {
 	Authentication     Auth
-	AmendmentDetails   AmendmentTTAmendCashTransfer
+	AmendmentDetails   AmendmentTeleTransferAmendCashTransfer
 	TransactionDetails Transaction2TTAmendCashTransfer
 }
 
@@ -349,38 +349,38 @@ type TransactionTTAmendCashTransferResponse struct {
 	FormNumber     string
 }
 
-//TTAmendCashTransferResponse is to provide service for Amendment “Cash Transfer” to Non account holder
-type TTAmendCashTransferResponse struct {
+//TeleTransferAmendCashTransferResponse is to provide service for Amendment “Cash Transfer” to Non account holder
+type TeleTransferAmendCashTransferResponse struct {
 	Error
-	AmendmentDetails   AmendmentTTAmendCashTransfer
+	AmendmentDetails   AmendmentTeleTransferAmendCashTransfer
 	TransactionDetails Transaction2TTAmendCashTransfer
 	StatusTransaction  string
 	StatusMessage      string
 }
 
 //TransactionTTCancelCashTransferRequest represents transaction details to cancel cash-transfer
-type TransactionTTCancelCashTransferRequest struct {
+type TransactionTeleTransferCancelCashTransferRequest struct {
 	FormNumber string
 	Amount     float64 `json:",string"`
 	CurrencyID string
 }
 
 //TTCancelCashTransferRequest is to provide service for Cancellation “Cash Transfer” to Non account holder
-type TTCancelCashTransferRequest struct {
+type TeleTransferCancelCashTransferRequest struct {
 	Authentication     Auth
-	TransactionDetails TransactionTTCancelCashTransferRequest
+	TransactionDetails TransactionTeleTransferCancelCashTransferRequest
 }
 
 //TransactionTTCancelCashTransferResponse represents transaction details to cancel cash-transfer
-type TransactionTTCancelCashTransferResponse struct {
+type TransactionTeleTransferCancelCashTransferResponse struct {
 	FormNumber      string
 	ReleaseDateTime string
 }
 
 //TTCancelCashTransferResponse is to provide service for Cancellation “Cash Transfer” to Non account holder
-type TTCancelCashTransferResponse struct {
+type TeleTransferCancelCashTransferResponse struct {
 	Error
-	TransactionDetails TransactionTTCancelCashTransferResponse
+	TransactionDetails TransactionTeleTransferCancelCashTransferResponse
 	StatusTransaction  string
 	StatusMessage      string
 }
