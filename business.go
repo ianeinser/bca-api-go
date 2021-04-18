@@ -90,6 +90,7 @@ type FundTransferResponse struct {
 type DomesticFundTransferRequest struct {
 	TransactionID            string
 	TransactionDate          string
+	ReferenceID              string
 	SourceAccountNumber      string
 	BeneficiaryAccountNumber string
 	BeneficiaryBankCode      string
