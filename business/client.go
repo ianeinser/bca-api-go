@@ -89,7 +89,7 @@ func (c *Client) DomesticFundTransfer(ctx context.Context, ptr_domesticFundTrans
 		return &domesticFundTransferResponse, err
 	}
 
-	path := "/banking/corporates/transfers/domestic"
+	path := "/banking/corporates/transfers/v2/domestic"
 
 	headers := map[string]string{
 		httpHeaderChannelID:    c.ChannelID,
