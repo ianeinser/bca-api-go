@@ -39,8 +39,8 @@ type BalanceInformationResponse struct {
 type AccountStatementRequest struct {
 	CorporateID   string
 	AccountNumber string
-	StartDate     time.Time
-	EndDate       time.Time
+	StartDate     string
+	EndDate       string
 }
 
 //AccountStatement represents account statement information
